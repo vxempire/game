@@ -11,7 +11,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                python-version: ['3.x']
+                python-version: ['3.7']
 
         steps:
             - name: 'Check out the repo'
@@ -22,19 +22,14 @@ jobs:
               with:
                   python-version: ${{ matrix.python-version }}
 
-            - name: Install dependencies
-              run: |
-                  python -m pip install --upgrade pip
-
             - name: Run tests
               run: |
                   pip install pytest
                   pip install pytest-cov
-                  coverage run --source=dicegame -m pytest tests/
+                  pytest tests --doctest-modules --junitxml=.coverage.xml --cov=dicegame | tee .coverage.txt
 
-            - name: Upload coverage
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: |
-                  pip install coveralls
-                  coveralls --service=github
+            - name: Pytest coverage comment
+              uses: MishaKav/pytest-coverage-comment@main
+              with:
+                  pytest-coverage-path: ./.coverage.txt
+                  junitxml-path: ./.coverage.xml
