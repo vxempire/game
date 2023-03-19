@@ -1,4 +1,4 @@
-from game.add import add
+from dicegame.add import add
 
 def main():
     a = int(input())
