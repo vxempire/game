@@ -1,0 +1,40 @@
+on:
+    push:
+        branch:
+            - main
+    pull_request:
+
+name: Coverage
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                python-version: '3.x'
+
+        steps:
+            - name: 'Check out the repo'
+              uses: actions/checkout@v3
+
+            - name: Set up Python ${{ matrix.python-version }}
+              uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ matrix.python-version }}
+
+            - name: Install dependencies
+              run: |
+                  python -m pip install --upgrade pip
+
+            - name: Run tests
+              run: |
+                  pip install pytest
+                  pip install pytest-cov
+                  coverage run --source=dicegame -m pytest tests/
+
+            - name: Upload coverage
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  pip install coveralls
+                  coveralls --service=github
