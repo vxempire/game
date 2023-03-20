@@ -5,6 +5,10 @@ __pycache__/
 
 .vscode/
 
+.pytest_cache/
+.coverage
+.coverage.*
+
 build/
 *.egg-info
 
