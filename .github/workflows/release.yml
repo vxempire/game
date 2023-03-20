@@ -47,9 +47,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ./dist/*.zip
-          asset_name: DiceGame-${{ github.ref }}.zip
-          asset_content_type: application/zip
+          asset_path: ./dist/*.tar.gz
+          asset_name: DiceGame-${{ github.ref }}.tar.gz
+          asset_content_type: application/gzip
 
       - name: Publish distribution 📦 to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
