@@ -26,10 +26,7 @@ jobs:
               run: |
                   pip install pytest
                   pip install pytest-cov
-                  pytest tests --doctest-modules --junitxml=.coverage.xml --cov=dicegame | tee .coverage.txt
+                  pytest --cov dicegame
 
-            - name: Pytest coverage comment
-              uses: MishaKav/pytest-coverage-comment@main
-              with:
-                  pytest-coverage-path: ./.coverage.txt
-                  junitxml-path: ./.coverage.xml
+            - name: Upload coverage to Codecov
+              uses: codecov/codecov-action@v3
