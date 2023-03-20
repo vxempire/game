@@ -5,7 +5,7 @@ with open('README.md') as f:
 
 setup(
     name='dicegame',
-    version='0.1.3',
+    version='0.1.5',
     packages=find_packages(),
     install_requires=[],
     long_description=readme,
