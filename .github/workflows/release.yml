@@ -5,6 +5,9 @@ on:
 
 name: Release package
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,28 +31,13 @@ jobs:
         run: |
           python -m build --sdist --wheel --outdir dist/ .
 
-      - name: Create Release
-        id: create-release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: ""
-          draft: false
-          prerelease: false
-
       - name: Upload Package
         id: upload-release-asset
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ./dist/*.tar.gz
-          asset_name: DiceGame-${{ github.ref }}.tar.gz
-          asset_content_type: application/gzip
+          files: ./dist/*.tar.gz
 
       - name: Publish distribution 📦 to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
